@@ -31,24 +31,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate  {
     
     var isFingerOnPaddle = false
 
-
-
-    
     
     override func didMoveToView(view: SKView) {
         
-        physicsWorld.gravity = CGVectorMake(0, -9)
+        physicsWorld.gravity = CGVectorMake(0,0)
         physicsWorld.contactDelegate = self
         
         backgroundColor = UIColor.blackColor()
         
+       
         scoreLabel.fontColor = UIColor.whiteColor()
         scoreLabel.fontName = "Avenir"
         scoreLabel.fontSize = 25
         scoreLabel.text = "0"
         scoreLabel.position = CGPointMake(CGRectGetMidX(frame) + 150, CGRectGetMidY(frame))
         addChild(scoreLabel)
-        
         
         let borderBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         borderBody.friction = 0
@@ -57,13 +54,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate  {
         borderBody.linearDamping = 0
         self.physicsBody = borderBody
         
-        
-        
         var paddle = SKSpriteNode(imageNamed: "paddle")
-        paddle.xScale = 0.8
-        paddle.yScale = 0.8
+        paddle.xScale = 0.7
+        paddle.yScale = 0.7
         paddle.name = "paddle"
-        
         paddle.position = CGPoint(x: frame.size.width/2, y: 50)
         addChild(paddle)
         
@@ -77,9 +71,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate  {
         let bottom = SKSpriteNode(imageNamed: "paddle")
         bottom.position = CGPointMake(frame.width/2, 0)
         bottom.size.width = frame.width
-        bottom.size.height = 20
+        bottom.size.height = 10
         bottom.name = "bottom"
         bottom.hidden = true
+        addChild(bottom)
         
         bottom.physicsBody = SKPhysicsBody(rectangleOfSize: bottom.size)
         bottom.physicsBody?.dynamic = false
@@ -87,15 +82,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate  {
         bottom.physicsBody?.linearDamping = 0
         bottom.physicsBody?.angularDamping = 0
         bottom.physicsBody?.friction = 0
-        addChild(bottom)
+        
         
         bottom.physicsBody?.categoryBitMask = BottomCategory
         paddle.physicsBody?.categoryBitMask = PaddleCategory
+        
+        runAction((SKAction.sequence([SKAction.waitForDuration(1),SKAction.runBlock(spawnBall)])))
+      
        
+    }
+    func wait() {
+        SKAction.waitForDuration(2)
+    }
+
+    func random(x: Int) -> CGFloat {
+         var y: CGFloat = CGFloat(arc4random_uniform(UInt32(x)))
+         return y
     }
     
     
     func spawnBall() {
+        
+        
         ball = SKSpriteNode(imageNamed: "bal")
         ball.xScale = 0.4
         ball.yScale = 0.4
@@ -110,17 +118,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate  {
         ball.physicsBody?.linearDamping = 0
         ball.physicsBody?.friction = 0
         
+        ball.physicsBody?.applyImpulse(CGVectorMake(8 + random(7), 15 + random(15)))
+        
         ball.physicsBody?.categoryBitMask = BallCategory
         ball.physicsBody?.contactTestBitMask = BottomCategory
-
-
+       
         
     }
     
-    func start(sender:AnyObject) {
-        println("start")
-        spawnBall()
-    }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
@@ -131,11 +136,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate  {
         if let body = physicsWorld.bodyAtPoint(location) {
             if body.node?.name == PaddleCategoryName {
                 isFingerOnPaddle = true
-                println("paddle touched")
+               
             }
           }
        }
     }
+    
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         isFingerOnPaddle = false
@@ -151,29 +157,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate  {
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
             firstBody = contact.bodyA
             secondBody = contact.bodyB
-            println("A")
+            
         } else {
             firstBody = contact.bodyB
             secondBody = contact.bodyA
-             println("B")
+            
         }
         
         if firstBody.categoryBitMask == BallCategory && secondBody.categoryBitMask == BottomCategory {
-            println("Touched the bottom")
+            
             ball.physicsBody?.velocity = CGVectorMake(0, 0)
             ball.removeFromParent()
             score++
             scoreLabel.text = String(score)
             isRunning = false
-            if score >= 3 {
+
+            runAction((SKAction.sequence([SKAction.waitForDuration(1),SKAction.runBlock(spawnBall)])))
+           
+            if score >= 10 {
+                
                 let gameOverScene = GameOverScene(size: size)
                 gameOverScene.scaleMode = scaleMode
-                let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+                let reveal = SKTransition.flipHorizontalWithDuration(0.7)
                 self.view?.presentScene(gameOverScene, transition: reveal)
             }
-            
         }
-        
     }
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
@@ -193,6 +201,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate  {
     }
    
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
     }
 }

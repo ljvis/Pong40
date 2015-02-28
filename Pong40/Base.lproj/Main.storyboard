@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LVB-YS-i5n">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Game View Controller-->
@@ -16,36 +15,11 @@
                     <view key="view" contentMode="scaleToFill" id="bdc-N1-crn" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lOm-zZ-cnq">
-                                <rect key="frame" x="9" y="272" width="35" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="35" id="EGk-Qm-IIm"/>
-                                </constraints>
-                                <state key="normal" title="Button" image="Oval 11.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="ballButton:" destination="LVB-YS-i5n" eventType="touchUpInside" id="dV8-nM-fcQ"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="b3d-qh-BLL" firstAttribute="top" secondItem="lOm-zZ-cnq" secondAttribute="bottom" constant="284" id="C2V-Q2-hDF"/>
-                            <constraint firstItem="lOm-zZ-cnq" firstAttribute="top" secondItem="PCf-gQ-wO7" secondAttribute="bottom" constant="252" id="iTj-PJ-0gZ"/>
-                            <constraint firstItem="lOm-zZ-cnq" firstAttribute="leading" secondItem="bdc-N1-crn" secondAttribute="leadingMargin" constant="-7" id="pk6-Ye-95q"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="startButton" destination="lOm-zZ-cnq" id="Hlg-vg-yZf"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="btX-cZ-eVz" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
     </scenes>
-    <resources>
-        <image name="Oval 11.png" width="56" height="56"/>
-    </resources>
 </document>

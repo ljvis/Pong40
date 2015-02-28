@@ -29,19 +29,14 @@ class GameViewController: UIViewController {
     
     var gameScene: GameScene!
 
-    @IBOutlet weak var startButton: UIButton!
     
-    @IBAction func ballButton(sender: AnyObject) {
-        gameScene.start(sender)
-        
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             gameScene = scene
-            gameScene.startButton = startButton
+          
             // Configure the view.
             let skView = self.view as SKView
             skView.showsFPS = true
